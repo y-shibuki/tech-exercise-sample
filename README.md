@@ -72,7 +72,6 @@ exit()
 ### 6. 動作確認
 
 ```bash
-cd project
 python manage.py runserver
 ```
 
