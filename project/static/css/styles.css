@@ -1,0 +1,8 @@
+/* ここでカスタムのCSS設定を記述する */
+
+/* ナビゲージョンバーのアイコンをいい感じに揃える */
+.nav-item > .nav-link > span{
+    display: inline-block;
+    width: 30px;
+    text-align: center;
+  }
