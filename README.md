@@ -2,18 +2,32 @@
 
 ## 環境設定
 
-### 1. リポジトリをローカルにクローン
+### 1. リポジトリをローカルにコピー
 
-```bash
-git clone [このリポジトリのリンク]
-```
+任意の手順です。あくまでも参考にするだけという場合には飛ばしてください。  
+
+**メンバの誰か1人が行う**  
+*※ GitHubのリポジトリをGitLabの既存のリポジトリにフォークする方法が分からなかったので、ちょっと面倒な方法になってます。*  
+
+1. GitHubのページから「Code -> Download ZIP」を選択し、ソースコード一式をダウンロードする。  
+2. zipファイルを展開する。  
+3. チームの代表リポジトリ（GitLabにすでに用意されているもの）を、ローカルにクローンする。  
+4. クローンしたフォルダに、zipファイルの中身を全てコピーする。  
+5. ブランチを作成し、チェックアウトする（ブランチ名はなんでもいいです。feat/initial_setupとか？）  
+6. 全てのファイルをステージングし、コミットする（コミット名はなんでもいいですが、初期設定であることがわかるようにすると良いです。）  
+7. リモートへプッシュし、mainブランチへマージする（マージリクエスト）。  
+
+**メンバー全員が行う**  
+
+1. チームの代表リポジトリをローカルにクローンし、ソースコード一式がコピーされていることを確認する。
 
 ### 2. Python の仮想環境を作成
 
+以降、ローカルリポジトリのトップフォルダ名が「tech-exercise-sample」だという前提で説明をします。[フォルダ構成はこちら](#フォルダ構成)  
 ライブラリのインストールエラーを避ける・対応しやすくするために、仮想環境を作成するのがおすすめです。
 
 ```bash
-cd tech-exercise
+cd tech-exercise-sample
 python -m venv .venv
 source ./.venv/bin/activate
 ```
@@ -29,7 +43,7 @@ pip install -r requirements.txt
 
 GitLabにアップロードしてはいけない情報の管理方法  
 
-**メンバーの誰か1人が行う**  
+**メンバの誰か1人が行う**  
 
 1. projectフォルダ内の```.env.sample```ファイルをコピーし、```.env.local```に名前を変更する。  
 2. 以下のコマンドを順に実行する  
@@ -91,16 +105,15 @@ git branch john/add_homepage
 
 ## フォルダ構成
 
+あくまでも一例です。調べると色々とパターンが出てきます。
+
 ```bash
-.
+tech-exercise-sample
+├── .venv
 ├── README.md
-├── docker
-│   ├── Dockerfile
-│   └── mysql
-│       └── my.cnf
-├── docker-compose.yml
+├── .gitignore               <- Gitの管理対象外とするファイルを定義する。ここに書かれたファイルはステージングされない。
 ├── project
-│   ├── app
+│   ├── app                  <- アプリの具体的な実装がまとまっているフォルダ。
 │   │   ├── __init__.py
 │   │   ├── admin.py
 │   │   ├── apps.py
@@ -108,22 +121,25 @@ git branch john/add_homepage
 │   │   ├── tests.py
 │   │   ├── urls.py
 │   │   └── views.py
-│   ├── config
+│   ├── config               <- アプリの設定がまとまっているフォルダ。
 │   │   ├── __init__.py
 │   │   ├── asgi.py
-│   │   ├── settings.py
-│   │   ├── settings_MySQLを使う場合.py
-│   │   ├── urls.py
+│   │   ├── settings.py      <- アプリの設定ファイル。
+│   │   ├── urls.py          <- URLパターンの登録ファイル。
 │   │   └── wsgi.py
-│   ├── manage.py
 │   ├── static
 │   │   └── css
-│   │       └── styles.css
-│   └── templates
-│       ├── app
-│       │   ├── footer.html
-│       │   ├── index.html
-│       │   └── navbar.html
-│       └── base.html
-└── requirements.txt
+│   │       └── styles.css   <- 自分でCSSを設定したい場合はここに追記する。ファイルを分けても良いが、その場合はbase.htmlを変更する必要がある。
+│   ├── media                <- 画像を扱う場合には、ここに画像が保存される。Gitの管理対象外なので、ソースコード一式には存在していない。
+│   ├── templates
+│   │   ├── app
+│   │   │   ├── footer.html
+│   │   │   ├── index.html
+│   │   │   └── navbar.html
+│   │   └── base.html        <- bootstrapを用いたテンプレートファイル。ナビゲーション、フッタがいい感じに配置されてるはず。
+│   ├── .env.local           <- ここに環境変数を記載する。Gitの管理対象外。
+│   ├── .env.sample          <- どういう環境変数を定義すべきかを記載する。ここには絶対に値を書かない。
+│   ├── db.sqlite3
+│   └── manage.py
+└── requirements.txt         <- 使用するPythonのライブラリ一覧。チームで開発環境を統一するために。
 ```
